@@ -35,8 +35,8 @@ import (
 )
 
 const (
-	errFmtReferenceEnvironmentConfig   = "failed to build reference at index %d"
-	errFmtResolveLabelValue            = "failed to resolve value for label at index %d"
+	errFmtReferenceEnvironmentConfig   = "failed to build reference for environment at index %d for type:Selector with matchLabels %s"
+	errFmtResolveLabelValue            = "failed to resolve value for label with key %s at index %d"
 	errListEnvironmentConfigs          = "failed to list environments"
 	errFmtSelectorNotEnoughResults     = "expected at least %d EnvironmentConfig(s) with matching labels, found: %d"
 	errFmtInvalidEnvironmentSourceType = "invalid source type '%s'"
@@ -90,11 +90,11 @@ func (s *APIEnvironmentSelector) SelectEnvironment(ctx context.Context, cr resou
 		case v1.EnvironmentSourceTypeSelector:
 			ec, err := s.lookUpConfigs(ctx, cr, src.Selector.MatchLabels)
 			if err != nil {
-				return errors.Wrapf(err, errFmtReferenceEnvironmentConfig, i)
+				return errors.Wrapf(err, errFmtReferenceEnvironmentConfig, i, fmt.Sprintln(src.Selector.MatchLabels))
 			}
 			r, err := s.buildEnvironmentConfigRefFromSelector(ec, src.Selector)
 			if err != nil {
-				return errors.Wrapf(err, errFmtReferenceEnvironmentConfig, i)
+				return errors.Wrapf(err, errFmtReferenceEnvironmentConfig, i, fmt.Sprintln(src.Selector.MatchLabels))
 			}
 			refs = append(refs, r...)
 		default:
@@ -123,6 +123,7 @@ func (s *APIEnvironmentSelector) lookUpConfigs(ctx context.Context, cr resource.
 				continue
 			}
 			return nil, errors.Wrapf(err, errFmtResolveLabelValue, i)
+			//return nil, errors.Wrapf(err, errFmtResolveLabelValue, m.Key, i)
 		}
 		matchLabels[m.Key] = val
 	}

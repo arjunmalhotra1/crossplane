@@ -73,7 +73,8 @@ const (
 	errCompose                = "cannot compose resources"
 	errRenderCD               = "cannot render composed resource"
 
-	reconcilePausedMsg = "Reconciliation (including deletion) is paused via the pause annotation"
+	reconcilePausedMsg     = "Reconciliation (including deletion) is paused via the pause annotation"
+	errFmtPatchEnvironment = "cannot apply %s environment patch at index %d for field %s"
 )
 
 // Event reasons.
