@@ -75,6 +75,7 @@ const (
 
 	reconcilePausedMsg     = "Reconciliation (including deletion) is paused via the pause annotation"
 	errFmtPatchEnvironment = "cannot apply %s environment patch at index %d for field %s"
+	errFmtPatchEnvironment = "cannot apply %q environment patch at index %d for field %q"
 )
 
 // Event reasons.
